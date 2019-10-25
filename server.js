@@ -28,29 +28,30 @@ function handleGetMovie(req, res){
     const { genre, country, avg_vote } = req.query;
 
     let filteredMovieList = MOVIEDEX;
+
     //filter by genre
     if(genre){
         console.log('genre is ', genre);
-        filteredMovieList.filter(filtered => 
+        filteredMovieList = filteredMovieList.filter(filtered => 
             filtered.genre.toLowerCase().includes(genre.toLowerCase())
         )
     }
     if(country){
         console.log('country is ', country);
-        filteredMovieList.filter(filtered => 
+        filteredMovieList = filteredMovieList.filter(filtered => 
             filtered.country.toLowerCase().includes(country.toLowerCase())
         )
     }
     if(avg_vote){
         console.log('average vote is parsed to be ', avg_vote);
-        filteredMovieList.filter(filtered => 
-            Number(filtered.avg_votes) >= Number(avg_vote)
+        filteredMovieList = filteredMovieList.filter(filtered => 
+            Number(filtered.avg_vote) >= Number(avg_vote)
         )
     }
 
 
     if(filteredMovieList.length > 1){
-        res.status(200).send(filteredMovieList)
+        res.status(200).json(filteredMovieList)
     }else{
         res.status(400).send('Sorry, no matching movies.')
     }
