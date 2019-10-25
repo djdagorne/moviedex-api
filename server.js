@@ -31,19 +31,16 @@ function handleGetMovie(req, res){
 
     //filter by genre
     if(genre){
-        console.log('genre is ', genre);
         filteredMovieList = filteredMovieList.filter(filtered => 
             filtered.genre.toLowerCase().includes(genre.toLowerCase())
         )
     }
     if(country){
-        console.log('country is ', country);
         filteredMovieList = filteredMovieList.filter(filtered => 
             filtered.country.toLowerCase().includes(country.toLowerCase())
         )
     }
     if(avg_vote){
-        console.log('average vote is parsed to be ', avg_vote);
         filteredMovieList = filteredMovieList.filter(filtered => 
             Number(filtered.avg_vote) >= Number(avg_vote)
         )
@@ -65,8 +62,17 @@ function handleGetMovie(req, res){
 
 app.get('/movies', handleGetMovie);
 
-const PORT = 8000;
+app.use((error, req, res, next) => {
+    let response
+    if(process.env.NODE_ENV === 'production'){
+        reponse = {error: {message: 'server error'}}
+    }else{
+        reponse = { error }
+    }
+    res.status(500).json(response);
+})
+
+const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
-    console.log(`Server listening at http://localhost:${PORT}`);
 });
