@@ -47,7 +47,7 @@ function handleGetMovie(req, res){
     }
 
 
-    if(filteredMovieList.length > 1){
+    if(filteredMovieList.length){
         res.status(200).json(filteredMovieList)
     }else{
         res.status(400).send('Sorry, no matching movies.')
